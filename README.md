@@ -2,6 +2,8 @@
 
 A OTP Generator Flutter project.
 
+![Capture](https://github.com/JAICHANGPARK/flutter_2fa_generator/blob/main/captures/capture_00.png)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

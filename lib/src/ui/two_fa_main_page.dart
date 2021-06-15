@@ -37,6 +37,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
     setState(() {
       _totpText = totp!.now();
     });
+    print("_totpText");
     _toptTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       int s = DateTime.now().second;
       print("second: $s");
@@ -48,7 +49,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
 
       if(DateTime.now().second % 30 == 0){
         setState(() {
-          _totpCounter = 0;
+          _totpCounter = 1;
           _totpText = totp!.now();
         });
       }

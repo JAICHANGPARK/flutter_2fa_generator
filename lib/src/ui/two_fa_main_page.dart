@@ -27,25 +27,35 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentTimeTimer = Timer.periodic(const Duration(milliseconds: 250), (timer) {
+    _currentTimeTimer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       setState(() {
         _currentTimeText = DateTime.now().toString();
       });
     });
 
     totp = TOTP(secret: "J22U6B3WIWRRBTAV", digits: 6, interval: 30);
-    _toptTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _totpCounter++;
-      _percent = _totpCounter / 30;
-      print(">> ${_totpCounter}");
-      print(_percent);
-      if (_totpCounter == 30) {
-        _totpCounter = 1;
-      }
-      setState(() {
-        _totpText = totp!.now();
-      });
+    setState(() {
+      _totpText = totp!.now();
     });
+    _toptTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      int s = DateTime.now().second;
+      print("second: $s");
+      if(s > 30){
+        s = 59 - s;
+      }
+      _totpCounter = s ~/ 30;
+      print("_totpCounter : ${_totpCounter}");
+
+      if(DateTime.now().second % 30 == 0){
+        setState(() {
+          _totpCounter = 0;
+          _totpText = totp!.now();
+        });
+      }
+
+    });
+
+
   }
 
   @override
@@ -93,11 +103,11 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                   ),
                                   cc.Meter(
                                     gridFrequency: 0.25,
-                                    percentage: _totpCounter != 1 ? _totpCounter / 30 : 0,
-                                    child: Text("${(_totpCounter / 30).toStringAsFixed(2)}"),
+                                    percentage: _totpCounter != 1 ? _totpCounter / 31 : 0,
+                                    child: Text("${(_totpCounter / 31).toStringAsFixed(2)}"),
                                   ),
                                   Text(
-                                    _totpCounter.toString(),
+                                    "${_totpCounter.toString()} s",
                                     style: const TextStyle(fontSize: 64, color: Colors.black),
                                   ),
                                 ],

@@ -93,7 +93,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                             width: MediaQuery.of(context).size.width / 2,
                             child: Center(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -103,14 +103,16 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                         : "",
                                     style: const TextStyle(fontSize: 64, color: Colors.black),
                                   ),
-                                  cc.Meter(
-                                    gridFrequency: 0.25,
-                                    percentage: _totpCounter != 1 ? _totpCounter / 31 : 0,
-                                    child: Text("${(_totpCounter / 31).toStringAsFixed(2)}"),
-                                  ),
-                                  Text(
-                                    "${_totpCounter.toString()} s",
-                                    style: const TextStyle(fontSize: 64, color: Colors.black),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      cc.ActivityIndicator(),
+                                      Text(
+                                        "${_totpCounter.toString()} s",
+                                        style: const TextStyle(fontSize: 64, color: Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

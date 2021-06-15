@@ -18,30 +18,32 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   Timer? _toptTimer;
   String _currentTimeText = "";
   String _totpText = "";
-  int _totpCounter = 0;
+  int _totpCounter = 1;
+  TOTP? totp;
 
-  TOTP totp = TOTP(secret: "J22U6B3WIWRRBTAV", digits: 6, interval: 30);
   double _percent = 0.0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentTimeTimer = Timer.periodic(Duration(milliseconds: 250), (timer) {
+    _currentTimeTimer = Timer.periodic(const Duration(milliseconds: 250), (timer) {
       setState(() {
         _currentTimeText = DateTime.now().toString();
       });
     });
-    _toptTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+
+    totp = TOTP(secret: "J22U6B3WIWRRBTAV", digits: 6, interval: 30);
+    _toptTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _totpCounter++;
-      print(_totpCounter);
-      print(_totpCounter / 30);
       _percent = _totpCounter / 30;
+      print(">> ${_totpCounter}");
       print(_percent);
       if (_totpCounter == 30) {
-        _totpCounter = 0;
+        _totpCounter = 1;
       }
       setState(() {
-        _totpText = totp.now();
+        _totpText = totp!.now();
       });
     });
   }
@@ -84,14 +86,20 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    _totpText,
+                                    _totpText != ""
+                                        ? "${_totpText.substring(0, 3) + " " + _totpText.substring(3, 6)}"
+                                        : "",
                                     style: const TextStyle(fontSize: 64, color: Colors.black),
                                   ),
                                   cc.Meter(
                                     gridFrequency: 0.25,
-                                    percentage:_totpCounter != 0 ?  _totpCounter / 31: 0,
-                                    child: Text("${(_totpCounter / 31).toStringAsFixed(2)}"),
-                                  )
+                                    percentage: _totpCounter != 1 ? _totpCounter / 30 : 0,
+                                    child: Text("${(_totpCounter / 30).toStringAsFixed(2)}"),
+                                  ),
+                                  Text(
+                                    _totpCounter.toString(),
+                                    style: const TextStyle(fontSize: 64, color: Colors.black),
+                                  ),
                                 ],
                               ),
                             ),

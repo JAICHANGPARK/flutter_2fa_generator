@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chicago/chicago.dart';
-import 'src/ui/2fa_main_page.dart';
+import 'src/ui/two_fa_main_page.dart';
 
 void main() {
   runApp(const MyApp());

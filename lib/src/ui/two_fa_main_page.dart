@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:chicago/chicago.dart' as cc;
 
 class TwoFAMainPage extends StatefulWidget {
   final String title;
@@ -39,13 +40,18 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffdddcd5),
-      body: Column(
-        children: [
-          Text(
-            "${_currentTimeText}",
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          children: [
+            Text(
+              "${_currentTimeText}",
+              style: TextStyle(fontSize: 18),
+            ),
+            cc.TextInput(),
+
+          ],
+        ),
       ),
     );
   }

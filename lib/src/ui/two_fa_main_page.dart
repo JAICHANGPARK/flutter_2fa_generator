@@ -20,7 +20,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentTimeTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _currentTimeTimer = Timer.periodic(Duration(milliseconds: 250), (timer) {
       setState(() {
         _currentTimeText = DateTime.now().toString();
       });

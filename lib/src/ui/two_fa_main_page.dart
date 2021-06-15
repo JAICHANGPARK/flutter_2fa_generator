@@ -42,9 +42,10 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
       int s = DateTime.now().second;
       print("second: $s");
       if(s > 30){
-        s = 59 - s;
+        s = 31 -(60 - s);
       }
-      _totpCounter = s ~/ 30;
+      _totpCounter = s % 30;
+      if(_totpCounter == 0) _totpCounter = 1;
       print("_totpCounter : ${_totpCounter}");
 
       if(DateTime.now().second % 30 == 0){

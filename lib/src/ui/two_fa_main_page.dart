@@ -18,10 +18,14 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   Timer? _toptTimer;
   String _currentTimeText = "";
   String _totpText = "";
+  String _hotpText = "";
   int _totpCounter = 1;
   TOTP? totp;
+  HOTP? hotp;
 
   double _percent = 0.0;
+  TextEditingController _totpTextEditingController = TextEditingController();
+  TextEditingController _hotpTextEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -34,30 +38,30 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
     });
 
     totp = TOTP(secret: "J22U6B3WIWRRBTAV", digits: 6, interval: 30);
+    hotp = HOTP(secret: "J22U6B3WIWRRBTAV", digits: 6);
+
     setState(() {
       _totpText = totp!.now();
+      _hotpText = hotp!.at(counter: 0).toString();
     });
     print("_totpText");
     _toptTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       int s = DateTime.now().second;
       print("second: $s");
-      if(s > 30){
-        s = 31 -(60 - s);
+      if (s > 30) {
+        s = 31 - (60 - s);
       }
       _totpCounter = s % 30;
-      if(_totpCounter == 0) _totpCounter = 1;
+      if (_totpCounter == 0) _totpCounter = 1;
       print("_totpCounter : ${_totpCounter}");
 
-      if(DateTime.now().second % 30 == 0){
+      if (DateTime.now().second % 30 == 0) {
         setState(() {
           _totpCounter = 1;
           _totpText = totp!.now();
         });
       }
-
     });
-
-
   }
 
   @override
@@ -80,7 +84,67 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
               "${_currentTimeText}",
               style: TextStyle(fontSize: 18),
             ),
-            cc.TextInput(),
+            SizedBox(
+              height: 48,
+              width: double.infinity,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Secret Key: ",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: cc.TextInput(
+                      controller: _totpTextEditingController,
+                    ),
+                  )),
+                  cc.PushButton(
+                      label: 'Set',
+                      onPressed: () {
+                        if (_totpTextEditingController.text.length > 0) {
+                          String code = _totpTextEditingController.text.toUpperCase();
+                          try {
+                            totp = TOTP(secret: "${code}", digits: 6, interval: 30);
+                            _totpTextEditingController.clear();
+                            cc.Prompt.open(
+                              context: context,
+                              messageType: cc.MessageType.info,
+                              message: 'OTP 적용 완료',
+                              body: Container(),
+                              options: ['OK'],
+                              selectedOption: 0,
+                            );
+                            setState(() {
+                              _totpText = totp!.now();
+                            });
+                          } catch (e) {
+                            cc.Prompt.open(
+                              context: context,
+                              messageType: cc.MessageType.info,
+                              message: '${e.toString()}',
+                              body: Container(),
+                              options: ['OK'],
+                              selectedOption: 0,
+                            );
+                            return;
+                          }
+                        } else {
+                          cc.Prompt.open(
+                            context: context,
+                            messageType: cc.MessageType.info,
+                            message: "빈칸일수 없습니다.",
+                            body: Container(),
+                            options: ['OK'],
+                            selectedOption: 0,
+                          );
+                        }
+                      }),
+                ],
+              ),
+            ),
             SizedBox(height: 8),
             Expanded(
               child: cc.TabPane(
@@ -103,7 +167,6 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                         : "",
                                     style: const TextStyle(fontSize: 64, color: Colors.black),
                                   ),
-
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -118,7 +181,83 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                               ),
                             ),
                           )),
-                  cc.Tab(label: "HOTP", builder: (context) => Column()),
+                  cc.Tab(
+                      label: "HOTP",
+                      builder: (context) => Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Row(
+                                  children: [
+                                    Text("Count Hope : "),
+                                    Expanded(
+                                      child: cc.TextInput(
+                                        controller: _hotpTextEditingController,
+                                      ),
+                                    ),
+                                    SizedBox(width: 16,),
+                                    cc.PushButton(
+                                      onPressed: () {
+                                        if (_hotpTextEditingController.text.length > 0) {
+                                          String code = _hotpTextEditingController.text.toUpperCase();
+                                          int tmp = int.parse(code);
+                                          try {
+                                            _hotpTextEditingController.clear();
+                                            cc.Prompt.open(
+                                              context: context,
+                                              messageType: cc.MessageType.info,
+                                              message: 'OTP 적용 완료',
+                                              body: Container(),
+                                              options: ['OK'],
+                                              selectedOption: 0,
+                                            );
+                                            setState(() {
+                                              _hotpText = hotp!.at(counter: tmp).toString();
+                                            });
+                                          } catch (e) {
+                                            cc.Prompt.open(
+                                              context: context,
+                                              messageType: cc.MessageType.info,
+                                              message: '${e.toString()}',
+                                              body: Container(),
+                                              options: ['OK'],
+                                              selectedOption: 0,
+                                            );
+                                            return;
+                                          }
+                                        } else {
+                                          cc.Prompt.open(
+                                            context: context,
+                                            messageType: cc.MessageType.info,
+                                            message: "빈칸일수 없습니다.",
+                                            body: Container(),
+                                            options: ['OK'],
+                                            selectedOption: 0,
+                                          );
+                                        }
+                                      },
+                                      label: 'Set',
+                                    ),
+                                    SizedBox(width: 16,),
+                                    cc.PushButton(
+                                      label: "Reset",
+                                      onPressed: () {
+
+                                        setState(() {
+                                          _hotpText = hotp!.at(counter: 0).toString();
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                _hotpText != "" ? "${_hotpText.substring(0, 3) + " " + _hotpText.substring(3, 6)}" : "",
+                                style: const TextStyle(fontSize: 64, color: Colors.black),
+                              ),
+
+                            ],
+                          )),
                 ],
               ),
             ),

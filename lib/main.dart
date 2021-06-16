@@ -7,11 +7,16 @@ import 'package:window_size/window_size.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowTitle('Flutter 2FA Generator');
-    setWindowMinSize(const Size(700, 500));
-    setWindowMaxSize(Size.infinite);
+  try{
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      setWindowTitle('Flutter 2FA Generator');
+      setWindowMinSize(const Size(700, 500));
+      setWindowMaxSize(Size.infinite);
+    }
+  }catch(e){
+    print(e.toString());
   }
+
   runApp(const MyApp());
 }
 

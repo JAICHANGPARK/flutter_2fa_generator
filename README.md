@@ -2,7 +2,37 @@
 
 A OTP Generator Flutter project.
 
-![Capture](https://github.com/JAICHANGPARK/flutter_2fa_generator/blob/main/captures/capture_00.png)
+## Desktop
+  <table>
+    <tr>
+      <td style="text-align: center">
+        <img src="https://github.com/JAICHANGPARK/flutter_2fa_generator/blob/main/captures/capture_01.png" width="400"/>
+      </td>
+       </tr>
+  <tr>
+      <td style="text-align: center">
+      <img src="https://github.com/JAICHANGPARK/flutter_2fa_generator/blob/main/captures/capture_02.png" width="400"/>
+      </td> </tr>
+
+   
+  </table>
+
+
+## Web 
+
+  <table>
+    <tr>
+      <td style="text-align: center">
+        <img src="https://github.com/JAICHANGPARK/flutter_2fa_generator/blob/main/captures/capture_03.png" width="400"/>
+      </td>
+       </tr>
+  <tr>
+      <td style="text-align: center">
+      <img src="https://github.com/JAICHANGPARK/flutter_2fa_generator/blob/main/captures/capture_04.png" width="400"/>
+      </td> </tr>
+
+   
+  </table>
 
 ## Getting Started
 

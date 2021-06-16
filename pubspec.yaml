@@ -24,6 +24,10 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^1.0.3
   chicago: ^0.1.0-dev
+  window_size:
+    git:
+      url: git://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
   dart_otp:
     git:
       url: https://github.com/factisresearch/dart_otp.git

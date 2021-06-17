@@ -108,6 +108,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                           String code = _totpTextEditingController.text.toUpperCase();
                           try {
                             totp = TOTP(secret: "${code}", digits: 6, interval: 30);
+                            hotp = HOTP(secret: "${code}", digits: 6);
                             _totpTextEditingController.clear();
                             cc.Prompt.open(
                               context: context,
@@ -119,6 +120,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                             );
                             setState(() {
                               _totpText = totp!.now();
+                              _hotpText = hotp!.at(counter: 0)!;
                             });
                           } catch (e) {
                             cc.Prompt.open(

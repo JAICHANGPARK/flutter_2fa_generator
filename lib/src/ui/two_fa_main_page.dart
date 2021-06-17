@@ -27,6 +27,8 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   TextEditingController _totpTextEditingController = TextEditingController();
   TextEditingController _hotpTextEditingController = TextEditingController();
 
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -75,14 +77,42 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       backgroundColor: const Color(0xffdddcd5),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text("2FA Generator"),
+            ),
+            ListTile(
+              title: Text("개발: 박제창"),
+            ),
+            Divider(
+              color: Colors.grey,
+            )
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            Text(
-              "${_currentTimeText}",
-              style: TextStyle(fontSize: 18),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      _globalKey.currentState?.openDrawer();
+                    },
+                    icon: Icon(Icons.menu)),
+                Text(
+                  "${_currentTimeText}",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
             ),
             SizedBox(
               height: 48,
@@ -147,7 +177,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                 ],
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Expanded(
               child: cc.TabPane(
                 initialSelectedIndex: 0,
@@ -197,7 +227,9 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                         controller: _hotpTextEditingController,
                                       ),
                                     ),
-                                    SizedBox(width: 16,),
+                                    SizedBox(
+                                      width: 16,
+                                    ),
                                     cc.PushButton(
                                       onPressed: () {
                                         if (_hotpTextEditingController.text.length > 0) {
@@ -240,11 +272,12 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                       },
                                       label: 'Set',
                                     ),
-                                    SizedBox(width: 16,),
+                                    SizedBox(
+                                      width: 16,
+                                    ),
                                     cc.PushButton(
                                       label: "Reset",
                                       onPressed: () {
-
                                         setState(() {
                                           _hotpText = hotp!.at(counter: 0).toString();
                                         });
@@ -257,7 +290,6 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                 _hotpText != "" ? "${_hotpText.substring(0, 3) + " " + _hotpText.substring(3, 6)}" : "",
                                 style: const TextStyle(fontSize: 64, color: Colors.black),
                               ),
-
                             ],
                           )),
                 ],

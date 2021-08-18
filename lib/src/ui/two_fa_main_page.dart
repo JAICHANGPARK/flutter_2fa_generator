@@ -81,7 +81,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
       backgroundColor: const Color(0xffdddcd5),
       drawer: Drawer(
         child: ListView(
-          children: [
+          children: const [
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -107,10 +107,10 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                     onPressed: () {
                       _globalKey.currentState?.openDrawer();
                     },
-                    icon: Icon(Icons.menu)),
+                    icon: const Icon(Icons.menu)),
                 Text(
-                  "${_currentTimeText}",
-                  style: TextStyle(fontSize: 18),
+                  _currentTimeText,
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             ),
@@ -120,7 +120,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     "Secret Key: ",
                     style: TextStyle(fontSize: 18),
                   ),
@@ -137,8 +137,8 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                         if (_totpTextEditingController.text.length > 0) {
                           String code = _totpTextEditingController.text.toUpperCase();
                           try {
-                            totp = TOTP(secret: "${code}", digits: 6, interval: 30);
-                            hotp = HOTP(secret: "${code}", digits: 6);
+                            totp = TOTP(secret: code, digits: 6, interval: 30);
+                            hotp = HOTP(secret: code, digits: 6);
                             _totpTextEditingController.clear();
                             cc.Prompt.open(
                               context: context,
@@ -156,7 +156,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                             cc.Prompt.open(
                               context: context,
                               messageType: cc.MessageType.info,
-                              message: '${e.toString()}',
+                              message: e.toString(),
                               body: Container(),
                               options: ['OK'],
                               selectedOption: 0,
@@ -195,7 +195,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                 children: [
                                   Text(
                                     _totpText != ""
-                                        ? "${_totpText.substring(0, 3) + " " + _totpText.substring(3, 6)}"
+                                        ? _totpText.substring(0, 3) + " " + _totpText.substring(3, 6)
                                         : "",
                                     style: const TextStyle(fontSize: 64, color: Colors.black),
                                   ),
@@ -252,7 +252,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                             cc.Prompt.open(
                                               context: context,
                                               messageType: cc.MessageType.info,
-                                              message: '${e.toString()}',
+                                              message: e.toString(),
                                               body: Container(),
                                               options: ['OK'],
                                               selectedOption: 0,
@@ -287,7 +287,7 @@ class _TwoFAMainPageState extends State<TwoFAMainPage> {
                                 ),
                               ),
                               Text(
-                                _hotpText != "" ? "${_hotpText.substring(0, 3) + " " + _hotpText.substring(3, 6)}" : "",
+                                _hotpText != "" ? _hotpText.substring(0, 3) + " " + _hotpText.substring(3, 6) : "",
                                 style: const TextStyle(fontSize: 64, color: Colors.black),
                               ),
                             ],
